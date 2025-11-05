@@ -41,17 +41,18 @@ function App() {
         </thead>
         <tbody className="overflow-y-scroll"></tbody>
       </table> */}
-      <div className="w-[80%] h-full mt-4">
-        <div className="w-full">
-          <div className="w-full flex justify-between">
+      <div className="w-[80%] pt-4 h-screen">
+        <div className="w-full h-full">
+          <div className="w-full h-full flex justify-between">
             {daysOfWeek.map((day, _) => (
-              <div key={_} className="text-3xl">
-                {day}
+              <div key={_} className="text-3xl h-full flex-1">
+                <h1>{day}</h1>
+                <div className="w-full h-[90%] bg-red-400 border-2"></div>
               </div>
             ))}
           </div>
-        </div>
         <div className="overflow-y-scroll"></div>
+        </div>
       </div>
     </div>
   );
