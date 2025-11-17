@@ -6,6 +6,7 @@ type Tasks = {
   name: string;
   description: string;
   done: boolean;
+  edited: boolean;
 };
 
 function App() {
@@ -36,10 +37,9 @@ function App() {
     "Sunday",
   ];
 
-  console.log(months);
   return (
-    <div className="flex justify-center">
-      <div>
+    <div className="flex w-full justify-center">
+      <div className="w-[25%]">
         <div>
           {/* <button onClick={() => setTasks((prev) => prev !== undefined ? [...prev, [tasks?.length, taskName, "", false]].flat() : [])}>addTask</button> */}
           <button
@@ -52,26 +52,95 @@ function App() {
                     name: taskName,
                     description: "description",
                     done: false,
+                    edited: false,
                   },
                 ].flat()
               )
-            } className="border-2 border-r-emerald-900"
+            }
+            className="border-2 border-r-emerald-900"
           >
             addTask
           </button>
           <input onChange={(e) => setTaskName(e.target.value)} />
         </div>
         <div>
-          {tasks?.map((task) => (
-            <div
-              key={task.id}
-              className="w-full h-[50px] border-2 border-black"
-            >
-              <h1>{task.name}</h1>
-              <p>{task.description}</p>
-              <input type="checkbox" onChange={(e) => task.done=e.target.checked} />
-            </div>
-          ))}
+          {tasks.map((task) =>
+            !task.edited ? (
+              <div key={task.id} className="h-fit flex border-2 border-black">
+                <div className="flex-col w-[85%]">
+                  <h1>{task.name}</h1>
+                  <p>{task.description}</p>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => (task.done = e.target.checked)}
+                  />
+                </div>
+                <div className="w-[15%] flex flex-col ">
+                  <button
+                    onClick={() =>
+                      setTasks((prev) =>
+                        prev.map((t) =>
+                          t.id === task.id
+                            ? {
+                                ...task,
+                                edited: true,
+                              }
+                            : t
+                        )
+                      )
+                    }
+                  >
+                    <img src="/solar--pen-line-duotone.svg"/>
+                  </button>
+                  <img
+                    src="/solar--trash-bin-trash-linear.svg"
+                    onClick={() =>
+                      setTasks((prev) =>
+                        prev.filter((item) => item.id !== task.id).map((t) => t)
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            ) : (
+              <div key={task.id} className="h-fit flex border-2 border-black">
+                <div className="flex-col w-[85%]">
+                  <input value={task.name}/>
+                  <input value={task.description}/>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => (task.done = e.target.checked)}
+                  />
+                </div>
+                <div className="w-[15%] flex flex-col ">
+                  <button
+                    onClick={() =>
+                      setTasks((prev) =>
+                        prev.map((t) =>
+                          t.id === task.id
+                            ? {
+                                ...task,
+                                edited: false,
+                              }
+                            : t
+                        )
+                      )
+                    }
+                  >
+                    <img src="/solar--check-circle-line-duotone.svg"/>
+                  </button>
+                  <img
+                    src="/solar--trash-bin-trash-linear.svg"
+                    onClick={() =>
+                      setTasks((prev) =>
+                        prev.filter((item) => item.id !== task.id).map((t) => t)
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            )
+          )}
         </div>
       </div>
       {/*       
